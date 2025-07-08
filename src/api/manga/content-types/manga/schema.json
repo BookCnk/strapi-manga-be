@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mangas",
+  "info": {
+    "singularName": "manga",
+    "pluralName": "mangas",
+    "displayName": "manga",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "description": {
+      "type": "text"
+    },
+    "manga_status": {
+      "type": "enumeration",
+      "enum": [
+        "END",
+        "IN PROGRESS"
+      ]
+    },
+    "cover_image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "author": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    }
+  }
+}
