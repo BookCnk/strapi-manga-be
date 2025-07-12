@@ -28,21 +28,37 @@
         "IN PROGRESS"
       ]
     },
-    "cover_image": {
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
-      "type": "media",
-      "multiple": false
-    },
     "author": {
       "type": "string"
     },
     "language": {
       "type": "string"
+    },
+    "views": {
+      "type": "integer"
+    },
+    "likes": {
+      "type": "integer"
+    },
+    "cover_image_url": {
+      "type": "text"
+    },
+    "rating": {
+      "type": "decimal"
+    },
+    "last_chapter_number": {
+      "type": "integer"
+    },
+    "last_updated_at": {
+      "type": "datetime"
+    },
+    "bookmarks": {
+      "type": "integer"
+    },
+    "chapters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::chapter.chapter"
     }
   }
 }
