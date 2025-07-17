@@ -12,7 +12,7 @@ module.exports = {
     },
     {
       method: 'GET',
-      path: '/manga/:slug/chapters',
+      path: '/mangas/:slug/chapters',
       handler: 'chapter.getChaptersBySlug',
       config: {
         auth: false
