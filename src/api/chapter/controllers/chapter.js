@@ -29,7 +29,7 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
       }
 
    
-      return ctx.send(entries[0]);
+      return ctx.send(result[0]);
     },
   };
 });
