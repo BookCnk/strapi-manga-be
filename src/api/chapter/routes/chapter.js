@@ -7,10 +7,19 @@ module.exports = createCoreRouter("api::chapter.chapter", {
     findBySlugAndChapterNumber: {
       auth: false,
     },
+    getChaptersBySlug: {
+      auth: false,
+    },
   },
   async extendRoutes(routes) {
     return [
       ...routes,
+      {
+        method: "GET",
+        path: "/mangas/:slug/chapters",
+        handler: "chapter.getChaptersBySlug",
+        config: { auth: false },
+      },
       {
         method: "GET",
         path: "/mangas/:slug/:chapterNumber",
