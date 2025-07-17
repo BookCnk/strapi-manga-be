@@ -6,13 +6,13 @@
 
 const { createCoreController } = require("@strapi/strapi").factories;
 module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
-  console.log("🔥 Custom controller loaded");
-
+  const defaultController = createCoreController("api::chapter.chapter");
+  
   return {
+    ...defaultController({strapi}),
+
     async findBySlugAndChapterNumber(ctx) {
       const { slug, chapterNumber } = ctx.params;
-      console.log("🚀 slug:", slug);
-      console.log("📖 chapterNumber:", chapterNumber);
 
       const result = await strapi.db.query("api::chapter.chapter").findMany({
         where: {
@@ -25,12 +25,11 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
       });
 
       if (!result || result.length === 0) {
-        console.log("❌ Not found");
         return ctx.notFound("Chapter not found");
       }
 
    
-      return result[0];
+      return ctx.send(entries[0]);
     },
   };
 });
