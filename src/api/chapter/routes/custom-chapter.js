@@ -10,5 +10,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: 'GET',
+      path: '/manga/:slug/chapters',
+      handler: 'chapter.getChaptersBySlug',
+      config: {
+        auth: false
+      }
+    }
   ],
 };

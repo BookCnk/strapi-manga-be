@@ -7,9 +7,9 @@
 const { createCoreController } = require("@strapi/strapi").factories;
 module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
   const defaultController = createCoreController("api::chapter.chapter");
-  
+
   return {
-    ...defaultController({strapi}),
+    ...defaultController({ strapi }),
 
     async findBySlugAndChapterNumber(ctx) {
       const { slug, chapterNumber } = ctx.params;
@@ -28,8 +28,32 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
         return ctx.notFound("Chapter not found");
       }
 
-   
       return ctx.send(result[0]);
+    },
+    async getChaptersBySlug(ctx) {
+      const { slug } = ctx.params;
+
+      const manga = await strapi.entityService.findMany("api::manga.manga", {
+        filters: { slug },
+        fields: ["id"],
+      });
+
+      if (!manga || manga.length === 0) {
+        return ctx.notFound("Manga not found");
+      }
+
+      const mangaId = manga[0].id;
+
+      const chapters = await strapi.entityService.findMany(
+        "api::chapter.chapter",
+        {
+          filters: { manga: mangaId },
+          sort: { chapter_number: "asc" },
+          fields: ["id", "chapter_number"],
+        },
+      );
+
+      ctx.send(chapters);
     },
   };
 });
