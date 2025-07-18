@@ -3,12 +3,12 @@
 module.exports = {
   routes: [
     {
-      method: 'GET',
-      path: '/mangas/:slug/chapters',
-      handler: 'chapter.getChaptersBySlug',
+      method: "GET",
+      path: "/mangas/:slug/chapters",
+      handler: "chapter.getChaptersBySlug",
       config: {
-        auth: false
-      }
+        auth: false,
+      },
     },
     {
       method: "GET",
@@ -17,6 +17,6 @@ module.exports = {
       config: {
         auth: false,
       },
-    }
+    },
   ],
 };

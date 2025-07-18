@@ -33,12 +33,10 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
 
       const results = await strapi.db.connection.raw(
         `
-    SELECT m.*, MAX(c.created_at) as latest_chapter_time
-    FROM mangas m
-    LEFT JOIN chapters c ON m.id = c.id
-    GROUP BY m.id
-    ORDER BY latest_chapter_time DESC
-    LIMIT ? OFFSET ?
+      SELECT *
+  FROM mangas
+  ORDER BY last_updated_chapter DESC
+  LIMIT ? OFFSET ?
   `,
         [pageSize, (page - 1) * pageSize],
       );
@@ -51,14 +49,48 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
         "api::manga.manga",
         {
           filters: { id: { $in: mangaIds } },
-          populate: ["chapters"],
+          populate: {
+            chapters: {
+              sort: ["release_date:desc"],
+              fields: [
+                "id",
+                "documentId",
+                "title",
+                "chapter_number",
+                "is_locked",
+                "coin_price",
+                "release_date",
+              ],
+            },
+          },
+          fields: [
+            "id",
+            "title",
+            "createdAt",
+            "updatedAt",
+            "publishedAt",
+            "slug",
+            "language",
+            "views",
+            "likes",
+            "cover_image_url",
+            "rating",
+            "last_chapter_number",
+            "last_updated_chapter",
+            "bookmarks",
+          ],
         },
       );
 
       // เรียงตาม latest_chapter_time ที่ดึงมาก่อนหน้า
-      const sorted = mangaIds.map((id) =>
-        mangasWithChapters.find((m) => m.id === id),
-      );
+      const sorted = mangaIds
+        .map((id) => {
+          const found = mangasWithChapters.find((m) => m.id === id);
+          if (!found)
+            console.warn(`Manga ID ${id} not found in entityService results`);
+          return found;
+        })
+        .filter(Boolean);
 
       return ctx.send(sorted);
     },

@@ -24,10 +24,7 @@
     },
     "manga_status": {
       "type": "enumeration",
-      "enum": [
-        "END",
-        "IN PROGRESS"
-      ]
+      "enum": ["END", "IN PROGRESS"]
     },
     "author": {
       "type": "string"
@@ -50,7 +47,7 @@
     "last_chapter_number": {
       "type": "integer"
     },
-    "last_updated_at": {
+    "last_updated_chapter": {
       "type": "datetime"
     },
     "bookmarks": {

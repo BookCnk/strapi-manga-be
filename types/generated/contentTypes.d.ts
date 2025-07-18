@@ -465,7 +465,7 @@ export interface ApiMangaManga extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.Text;
     language: Schema.Attribute.String;
     last_chapter_number: Schema.Attribute.Integer;
-    last_updated_at: Schema.Attribute.DateTime;
+    last_updated_chapter: Schema.Attribute.DateTime;
     likes: Schema.Attribute.Integer;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::manga.manga'> &
