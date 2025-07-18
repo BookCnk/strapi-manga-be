@@ -10,6 +10,7 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
     "title": {
       "type": "string"
@@ -59,6 +60,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::chapter.chapter"
+    },
+    "catagories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::catagory.catagory",
+      "mappedBy": "manga"
     }
   }
 }

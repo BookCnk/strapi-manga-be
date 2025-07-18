@@ -34,6 +34,10 @@ export interface AdminApiToken extends Struct.CollectionTypeSchema {
         minLength: 1;
       }> &
       Schema.Attribute.DefaultTo<''>;
+    encryptedKey: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
     expiresAt: Schema.Attribute.DateTime;
     lastUsedAt: Schema.Attribute.DateTime;
     lifespan: Schema.Attribute.BigInteger;
@@ -369,6 +373,36 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCatagoryCatagory extends Struct.CollectionTypeSchema {
+  collectionName: 'catagories';
+  info: {
+    displayName: 'catagory';
+    pluralName: 'catagories';
+    singularName: 'catagory';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::catagory.catagory'
+    > &
+      Schema.Attribute.Private;
+    manga: Schema.Attribute.Relation<'manyToOne', 'api::manga.manga'>;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiChapterChapter extends Struct.CollectionTypeSchema {
   collectionName: 'chapters';
   info: {
@@ -419,6 +453,10 @@ export interface ApiMangaManga extends Struct.CollectionTypeSchema {
   attributes: {
     author: Schema.Attribute.String;
     bookmarks: Schema.Attribute.Integer;
+    catagories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::catagory.catagory'
+    >;
     chapters: Schema.Attribute.Relation<'oneToMany', 'api::chapter.chapter'>;
     cover_image_url: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
@@ -989,6 +1027,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::catagory.catagory': ApiCatagoryCatagory;
       'api::chapter.chapter': ApiChapterChapter;
       'api::manga.manga': ApiMangaManga;
       'api::purchase.purchase': ApiPurchasePurchase;
