@@ -31,27 +31,30 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
       const page = parseInt(ctx.query.page) || 1;
       const pageSize = 10;
 
-      // นับจำนวนทั้งหมดก่อน
-      const countResult = await strapi.db.connection.raw(
-        `SELECT COUNT(*) FROM mangas`,
-      );
-      const totalItems = parseInt(countResult.rows[0].count); // PostgreSQL ส่ง count เป็น string
+      // 1. นับจำนวน manga จริง (ไม่ซ้ำ document_id)
+      const countResult = await strapi.db.connection.raw(`
+    SELECT COUNT(*) FROM (
+      SELECT DISTINCT ON (document_id) id
+      FROM mangas
+    ) AS unique_mangas;
+  `);
+      const totalItems = parseInt(countResult.rows[0].count);
 
-      // ดึงข้อมูลตามหน้า
-      const results = await strapi.db.connection.raw(
+      // 2. ดึง manga เฉพาะเวอร์ชันล่าสุดของแต่ละ document_id
+      const result = await strapi.db.connection.raw(
         `
-    SELECT *
+    SELECT DISTINCT ON (document_id) *
     FROM mangas
-    ORDER BY last_updated_chapter DESC
+    ORDER BY document_id, updated_at DESC
     LIMIT ? OFFSET ?
   `,
         [pageSize, (page - 1) * pageSize],
       );
 
-      const mangas = results.rows;
+      const mangas = result.rows;
       const mangaIds = mangas.map((m) => m.id);
 
-      // ดึงข้อมูล manga โดยไม่รวม chapters ก่อน
+      // 3. ดึงข้อมูล manga ที่จำเป็น (ไม่รวม chapters ก่อน)
       const mangasWithoutChapters = await strapi.entityService.findMany(
         "api::manga.manga",
         {
@@ -75,7 +78,7 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
         },
       );
 
-      // ดึงข้อมูล chapters แยกต่างหาก
+      // 4. ดึง chapters 3 ตอนล่าสุดของแต่ละ manga
       const mangasWithChapters = await Promise.all(
         mangasWithoutChapters.map(async (manga) => {
           const chapters = await strapi.entityService.findMany(
@@ -94,18 +97,19 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
               ],
             },
           );
-
           return {
             ...manga,
-            chapters: chapters,
+            chapters,
           };
         }),
       );
 
+      // 5. เรียงตามลำดับ mangaIds เดิม
       const sorted = mangaIds
         .map((id) => mangasWithChapters.find((m) => m.id === id))
         .filter(Boolean);
 
+      // 6. ส่งผลลัพธ์กลับ
       return ctx.send({
         data: sorted,
         pagination: {
