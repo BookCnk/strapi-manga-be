@@ -19,6 +19,11 @@ module.exports = {
 
     if (!mangaId || !chapterId) return;
 
+    await strapi.db.query("api::chapter.chapter").update({
+      where: { id: chapterId },
+      data: { release_date: new Date().toISOString() },
+    });
+
     const manga = await strapi.entityService.findOne(
       "api::manga.manga",
       mangaId,
