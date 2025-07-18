@@ -427,7 +427,7 @@ export interface ApiChapterChapter extends Struct.CollectionTypeSchema {
       'api::chapter.chapter'
     > &
       Schema.Attribute.Private;
-    manga: Schema.Attribute.Relation<'oneToOne', 'api::manga.manga'>;
+    manga: Schema.Attribute.Relation<'manyToOne', 'api::manga.manga'>;
     publishedAt: Schema.Attribute.DateTime;
     purchases: Schema.Attribute.Relation<'oneToMany', 'api::purchase.purchase'>;
     release_date: Schema.Attribute.DateTime;

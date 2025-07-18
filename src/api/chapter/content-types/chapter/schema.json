@@ -34,8 +34,9 @@
     },
     "manga": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::manga.manga"
+      "relation": "manyToOne",
+      "target": "api::manga.manga",
+      "inversedBy": "chapters"
     },
     "purchases": {
       "type": "relation",
