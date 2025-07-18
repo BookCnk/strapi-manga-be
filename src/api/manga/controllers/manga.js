@@ -51,23 +51,11 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
       const mangas = results.rows;
       const mangaIds = mangas.map((m) => m.id);
 
-      const mangasWithChapters = await strapi.entityService.findMany(
+      // ดึงข้อมูล manga โดยไม่รวม chapters ก่อน
+      const mangasWithoutChapters = await strapi.entityService.findMany(
         "api::manga.manga",
         {
           filters: { id: { $in: mangaIds } },
-          populate: {
-            chapters: {
-              sort: ["release_date:desc"],
-              fields: [
-                "id",
-                "title",
-                "chapter_number",
-                "is_locked",
-                "coin_price",
-                "release_date",
-              ],
-            },
-          },
           fields: [
             "id",
             "title",
@@ -87,20 +75,39 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
         },
       );
 
-      const sortedAndTrimmed = mangaIds
-        .map((id) => {
-          const found = mangasWithChapters.find((m) => m.id === id);
-          if (!found) return null;
+      // ดึงข้อมูล chapters แยกต่างหาก
+      const mangasWithChapters = await Promise.all(
+        mangasWithoutChapters.map(async (manga) => {
+          const chapters = await strapi.entityService.findMany(
+            "api::chapter.chapter",
+            {
+              filters: { manga: manga.id },
+              sort: ["release_date:desc"],
+              limit: 3,
+              fields: [
+                "id",
+                "title",
+                "chapter_number",
+                "is_locked",
+                "coin_price",
+                "release_date",
+              ],
+            },
+          );
 
           return {
-            ...found,
-            chapters: (found.chapters || []).slice(0, 3),
+            ...manga,
+            chapters: chapters,
           };
-        })
+        }),
+      );
+
+      const sorted = mangaIds
+        .map((id) => mangasWithChapters.find((m) => m.id === id))
         .filter(Boolean);
 
       return ctx.send({
-        data: sortedAndTrimmed,
+        data: sorted,
         pagination: {
           totalItems,
           pageSize,
