@@ -24,8 +24,21 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
       if (!entries || entries.length === 0) {
         return ctx.notFound("Manga not found");
       }
+      const manga = entries[0];
+      await strapi.entityService.update("api::manga.manga", manga.id, {
+        data: {
+          views: (manga.views || 0) + 1,
+        },
+      });
+      const updated = await strapi.entityService.findOne(
+        "api::manga.manga",
+        manga.id,
+        {
+          populate: ["chapters"],
+        },
+      );
 
-      return ctx.send(entries[0]);
+      return ctx.send(updated);
     },
     async recentUpdates(ctx) {
       const page = parseInt(ctx.query.page) || 1;
