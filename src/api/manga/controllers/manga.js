@@ -43,9 +43,9 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
       // 2. ดึง manga เฉพาะเวอร์ชันล่าสุดของแต่ละ document_id
       const result = await strapi.db.connection.raw(
         `
-    SELECT DISTINCT ON (document_id) *
-    FROM mangas
-    ORDER BY document_id, updated_at DESC
+    SELECT m.*
+    FROM mangas m
+    ORDER BY  last_updated_chapter DESC
     LIMIT ? OFFSET ?
   `,
         [pageSize, (page - 1) * pageSize],
@@ -85,7 +85,7 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
             "api::chapter.chapter",
             {
               filters: { manga: manga.id },
-              sort: ["release_date:desc"],
+              sort: ["createdAt:desc"],
               limit: 3,
               fields: [
                 "id",
@@ -93,7 +93,7 @@ module.exports = createCoreController("api::manga.manga", ({ strapi }) => {
                 "chapter_number",
                 "is_locked",
                 "coin_price",
-                "release_date",
+                "createdAt",
               ],
             },
           );
