@@ -24,7 +24,10 @@
     },
     "manga_status": {
       "type": "enumeration",
-      "enum": ["END", "IN PROGRESS"]
+      "enum": [
+        "END",
+        "IN PROGRESS"
+      ]
     },
     "author": {
       "type": "string"
@@ -56,7 +59,8 @@
     "chapters": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::chapter.chapter"
+      "target": "api::chapter.chapter",
+      "mappedBy": "manga"
     },
     "catagories": {
       "type": "relation",

@@ -9,7 +9,17 @@
   "options": {
     "draftAndPublish": true
   },
+  "pluginOptions": {},
   "attributes": {
+    "release_date": {
+      "type": "datetime",
+      "configurable": false,
+      "pluginOptions": {
+        "content-manager": {
+          "visible": false
+        }
+      }
+    },
     "title": {
       "type": "string"
     },
@@ -29,14 +39,8 @@
     "coin_price": {
       "type": "decimal"
     },
-    "release_date": {
-      "type": "datetime",
-      "configurable": false,
-      "pluginOptions": {
-        "content-manager": {
-          "visible": false
-        }
-      }
+    "views": {
+      "type": "biginteger"
     },
     "manga": {
       "type": "relation",
