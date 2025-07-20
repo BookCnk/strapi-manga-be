@@ -30,7 +30,13 @@
       "type": "decimal"
     },
     "release_date": {
-      "type": "datetime"
+      "type": "datetime",
+      "configurable": false,
+      "pluginOptions": {
+        "content-manager": {
+          "visible": false
+        }
+      }
     },
     "manga": {
       "type": "relation",
