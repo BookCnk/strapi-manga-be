@@ -18,5 +18,14 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/mangas/increment-view",
+      handler: "chapter.incrementView",
+      config: {
+        policies: [],
+        auth: false, 
+      },
+    },
   ],
 };
