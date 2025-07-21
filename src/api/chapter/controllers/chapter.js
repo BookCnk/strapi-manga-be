@@ -74,7 +74,7 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
       await strapi.db.query("api::chapter.chapter").update({
         where: { id: entity.id },
         data: {
-          views: (entity.views || 0) + 1,
+          views: (parseInt(entity.views, 10) || 0) + 1,
         },
       });
 
