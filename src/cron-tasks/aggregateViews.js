@@ -3,7 +3,7 @@ const cron = require('node-cron');
 module.exports = {
   start(strapi) {
     // Every 30 minutes
-    cron.schedule('*/0 * * * *', async () => {
+    cron.schedule('0 * * * *', async () => {
       try {
         const mangas = await strapi.db.query("api::manga.manga").findMany({
           populate: {
