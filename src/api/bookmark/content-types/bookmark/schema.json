@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bookmarks",
+  "info": {
+    "singularName": "bookmark",
+    "pluralName": "bookmarks",
+    "displayName": "Bookmark"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "manga": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::manga.manga",
+      "inversedBy": "bookmark"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "bookmarks"
+    }
+  }
+}

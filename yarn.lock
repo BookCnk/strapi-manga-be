@@ -1866,6 +1866,22 @@
     sharp "0.32.6"
     yup "0.32.9"
 
+"@strapi/utils@^5.18.1":
+  version "5.18.1"
+  resolved "https://registry.npmjs.org/@strapi/utils/-/utils-5.18.1.tgz"
+  integrity sha512-ZzPpanQf3cfspJzTAJGzJFDgF0hbXsSVlgh6hmgLJuby5UWKNFUWfYusUo9xsTeA6O3VGK5ZQ4hjbSmLVDu29Q==
+  dependencies:
+    "@sindresorhus/slugify" "1.1.0"
+    date-fns "2.30.0"
+    execa "5.1.1"
+    http-errors "2.0.0"
+    lodash "4.17.21"
+    node-machine-id "1.1.12"
+    p-map "4.0.0"
+    preferred-pm "3.1.2"
+    yup "0.32.9"
+    zod "3.24.2"
+
 "@strapi/utils@5.11.0":
   version "5.11.0"
   resolved "https://registry.npmjs.org/@strapi/utils/-/utils-5.11.0.tgz"
@@ -9730,7 +9746,7 @@ yup@0.32.9:
     property-expr "^2.0.4"
     toposort "^2.0.2"
 
-zod@^3.19.1, zod@^3.22.4:
+zod@^3.19.1, zod@^3.22.4, zod@3.24.2:
   version "3.24.2"
   resolved "https://registry.npmjs.org/zod/-/zod-3.24.2.tgz"
   integrity sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==

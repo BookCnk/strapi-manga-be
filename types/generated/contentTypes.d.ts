@@ -369,6 +369,38 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBookmarkBookmark extends Struct.CollectionTypeSchema {
+  collectionName: 'bookmarks';
+  info: {
+    displayName: 'Bookmark';
+    pluralName: 'bookmarks';
+    singularName: 'bookmark';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::bookmark.bookmark'
+    > &
+      Schema.Attribute.Private;
+    manga: Schema.Attribute.Relation<'manyToOne', 'api::manga.manga'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users: Schema.Attribute.Relation<
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiCatagoryCatagory extends Struct.CollectionTypeSchema {
   collectionName: 'catagories';
   info: {
@@ -454,6 +486,7 @@ export interface ApiMangaManga extends Struct.CollectionTypeSchema {
   };
   attributes: {
     author: Schema.Attribute.String;
+    bookmark: Schema.Attribute.Relation<'oneToMany', 'api::bookmark.bookmark'>;
     bookmarks: Schema.Attribute.Integer;
     catagories: Schema.Attribute.Relation<
       'oneToMany',
@@ -975,6 +1008,10 @@ export interface PluginUsersPermissionsUser
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    bookmarks: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::bookmark.bookmark'
+    >;
     coin_balance: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1029,6 +1066,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::bookmark.bookmark': ApiBookmarkBookmark;
       'api::catagory.catagory': ApiCatagoryCatagory;
       'api::chapter.chapter': ApiChapterChapter;
       'api::manga.manga': ApiMangaManga;

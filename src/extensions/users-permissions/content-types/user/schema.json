@@ -79,6 +79,12 @@
         "videos",
         "audios"
       ]
+    },
+    "bookmarks": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::bookmark.bookmark",
+      "inversedBy": "users"
     }
   }
 }
