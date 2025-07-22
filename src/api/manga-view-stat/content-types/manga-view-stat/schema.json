@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "manga_view_stats",
+  "info": {
+    "singularName": "manga-view-stat",
+    "pluralName": "manga-view-stats",
+    "displayName": "MangaViewStat"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "manga": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::manga.manga"
+    },
+    "date": {
+      "type": "date",
+      "unique": false
+    },
+    "views": {
+      "type": "biginteger"
+    }
+  }
+}

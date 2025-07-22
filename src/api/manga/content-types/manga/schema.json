@@ -73,6 +73,12 @@
       "relation": "oneToMany",
       "target": "api::bookmark.bookmark",
       "mappedBy": "manga"
+    },
+    "view_stats": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::manga-view-stat.manga-view-stat",
+      "mappedBy": "manga"
     }
   }
 }
