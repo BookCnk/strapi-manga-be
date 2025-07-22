@@ -55,5 +55,30 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
 
       ctx.send(chapters);
     },
+
+    async incrementView(ctx) {
+      const { slug } = ctx.request.body;
+
+      if (!slug) {
+        return ctx.badRequest("slug is required");
+      }
+      
+      const entity = await strapi.db.query("api::chapter.chapter").findOne({
+        where: { slug },
+      });
+
+      if (!entity) {
+        return ctx.notFound("Chapter not found");
+      }
+
+      await strapi.db.query("api::chapter.chapter").update({
+        where: { id: entity.id },
+        data: {
+          views: (parseInt(entity.views, 10) || 0) + 1,
+        },
+      });
+
+      ctx.send({ message: "View count incremented" });
+    },
   };
 });

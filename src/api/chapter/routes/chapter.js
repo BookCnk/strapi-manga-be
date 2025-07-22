@@ -10,6 +10,9 @@ module.exports = createCoreRouter("api::chapter.chapter", {
     getChaptersBySlug: {
       auth: false,
     },
+    incrementView: {
+      auth: false,
+    },
   },
   async extendRoutes(routes) {
     return [
@@ -26,6 +29,15 @@ module.exports = createCoreRouter("api::chapter.chapter", {
         handler: "chapter.findBySlugAndChapterNumber",
         config: {
           auth: false,
+        },
+      },
+      {
+        method: "POST",
+        path: "/mangas/increment-view",
+        handler: "chapter.incrementView",
+        config: {
+          policies: [],
+          auth: false, 
         },
       },
     ];
