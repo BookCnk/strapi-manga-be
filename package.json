@@ -15,18 +15,11 @@
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@strapi/plugin-users-permissions": "5.11.0",
-    "@strapi/provider-upload-local": "5.11.0",
-    "@strapi/strapi": "5.11.0",
-    "@strapi/utils": "^5.18.1",
-=======
     "@strapi/plugin-users-permissions": "^5.18.0",
     "@strapi/provider-upload-local": "5.11.0",
     "@strapi/strapi": "^5.18.0",
     "external-editor": "^3.1.0",
     "node-cron": "^4.2.1",
->>>>>>> e5d8c07a0b5d817daae117810b777c4e68e25382
     "pg": "8.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
