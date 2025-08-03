@@ -34,6 +34,10 @@ export interface AdminApiToken extends Struct.CollectionTypeSchema {
         minLength: 1;
       }> &
       Schema.Attribute.DefaultTo<''>;
+    encryptedKey: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
     expiresAt: Schema.Attribute.DateTime;
     lastUsedAt: Schema.Attribute.DateTime;
     lifespan: Schema.Attribute.BigInteger;
@@ -473,6 +477,38 @@ export interface ApiChapterChapter extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiMangaViewStatMangaViewStat
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'manga_view_stats';
+  info: {
+    displayName: 'MangaViewStat';
+    pluralName: 'manga-view-stats';
+    singularName: 'manga-view-stat';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.Date;
+    lastTotalViews: Schema.Attribute.BigInteger;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::manga-view-stat.manga-view-stat'
+    > &
+      Schema.Attribute.Private;
+    manga: Schema.Attribute.Relation<'manyToOne', 'api::manga.manga'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    views: Schema.Attribute.BigInteger;
+  };
+}
+
 export interface ApiMangaManga extends Struct.CollectionTypeSchema {
   collectionName: 'mangas';
   info: {
@@ -514,6 +550,10 @@ export interface ApiMangaManga extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     views: Schema.Attribute.Integer;
+    view_stats: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::manga-view-stat.manga-view-stat'
+    >;
   };
 }
 
@@ -1069,6 +1109,7 @@ declare module '@strapi/strapi' {
       'api::bookmark.bookmark': ApiBookmarkBookmark;
       'api::catagory.catagory': ApiCatagoryCatagory;
       'api::chapter.chapter': ApiChapterChapter;
+      'api::manga-view-stat.manga-view-stat': ApiMangaViewStatMangaViewStat;
       'api::manga.manga': ApiMangaManga;
       'api::purchase.purchase': ApiPurchasePurchase;
       'plugin::content-releases.release': PluginContentReleasesRelease;

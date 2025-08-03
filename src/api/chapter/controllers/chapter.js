@@ -62,9 +62,15 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
       if (!slug) {
         return ctx.badRequest("slug is required");
       }
-      
+
       const entity = await strapi.db.query("api::chapter.chapter").findOne({
+        fields: ["id","slug"],
         where: { slug },
+        populate: {
+          manga: {
+            fields: ["id"],
+          },
+        },
       });
 
       if (!entity) {
@@ -78,7 +84,15 @@ module.exports = createCoreController("api::chapter.chapter", ({ strapi }) => {
         },
       });
 
-      ctx.send({ message: "View count incremented" });
+      await strapi.db.query("api::manga.manga").update({
+        where: { id: entity.manga.id },
+        data: {
+          views: (parseInt(entity.manga.views, 10) || 0) + 1,
+        },
+      });
+      ctx.send({
+        message: "View count incremented",
+      });
     },
   };
 });

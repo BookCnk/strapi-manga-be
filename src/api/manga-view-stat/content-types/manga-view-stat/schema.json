@@ -22,6 +22,9 @@
     },
     "views": {
       "type": "biginteger"
+    },
+    "lastTotalViews": {
+      "type": "biginteger"
     }
   }
 }
